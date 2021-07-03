@@ -1,25 +1,54 @@
-import logo from './logo.svg';
+import React , { useState } from "react";
 import './App.css';
 
+import axios from 'axios';
+
+
+
 function App() {
+
+  const [users, setUsers] = React.useState([]);
+   const f = async () => {
+     const res = await fetch("http://dummy.restapiexample.com/api/v1/employees");
+     const json = await res.json();
+     setUsers(json.data);
+   };
+   React.useEffect(() => {
+     f();
+   }, []);
+
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <>
+   <div className="App">
+     <h1>Employee's Details</h1>
+     <div className="flex">
+  {users.length &&
+    users.map((user) => {
+      return (
+        <div  className= "Enter"  key={user.id}>
+          <p>
+            <strong>{user.employee_name}</strong>
+          </p>
+          <p> Salary: {user.employee_salary}</p>
+          <p>{user.employee_age}</p>
+          <img key={user.avatar} src={user.avatar} />
+        </div>
+      )}
+    )}
+
+
+     </div>
+     </div>
+   
+
+
+
+
+     </>
   );
 }
 
-export default App;
+export default App
